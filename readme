@@ -1,1 +1,44 @@
-Create new folder in  mod/feedback/item
+Linear scale item for Feedback plugin
+Edited radio FORM element to create radio with label above radiobutton.
+
+Copy folder scale in to mod/feedback/item/
+
+Append CSS to mod/feedback/styles.css:
+.feedback-radio-label-vertical {
+  position: relative;
+  display: inline-block !important;
+  vertical-align: middle;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.feedback-radio-label-vertical input {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  margin-left: -6px !important;
+  display: block;
+  cursor: pointer !important;
+}
+
+Change function toHtml() in lib/pear/html/QuickForm/radio.php
+    /**
+     * Returns the radio element in HTML
+     * 
+     * @since     1.0
+     * @access    public
+     * @return    string
+     */
+    function toHtml()
+    {
+        if (0 == strlen($this->_text)) {
+            $label = '';
+        } elseif ($this->_flagFrozen) {
+            $label = $this->_text;
+        } else if($this->_vertical) {
+              return '<label class="feedback-radio-label-vertical" for="' . $this->getAttribute('id') . '">' .HTML_QuickForm_input::toHtml(). $this->_text . '</label>';
+        }else{
+            $label = '<label for="' . $this->getAttribute('id') . '">' . $this->_text . '</label>';
+        }
+            return HTML_QuickForm_input::toHtml() . $label;
+    } //end func toHtml
